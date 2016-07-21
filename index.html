@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Hangman</title>
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	</head>
+	<body>
+		<div class="container">
+		<img id = "whosthat"/>
+				<h1>Who's that Pokemon!?</h1>
+					<p id="pokemon"></p>
+					<p id="candies"></p>
+					<p id="guesses"></p>
+					<span>Guessed letters: <span id="letters"></span></span>
+					<span id="message"></span>
+		</div>
+		<script type="text/javascript">
+			var hangmanWords = [
+				['p', 'i', 'k', 'a', 'c', 'h', 'u'],
+				['s', 'q', 'u', 'i', 'r', 't', 'l', 'e'],
+				['c', 'h', 'a', 'r', 'i', 'z', 'a', 'r', 'd'],
+				['e', 'l', 'e', 'c', 't', 'a', 'b', 'u', 'z', 'z'],
+				['h', 'i', 't', 'm', 'o', 'n', 'c', 'h', 'a', 'n'],
+				['c', 'h', 'i', 'k', 'o', 'r', 'i', 't', 'a'],
+				['a', 'm', 'p', 'h', 'a', 'r', 'o', 's'],
+				['s', 'u', 'd', 'o', 'w', 'o', 'o', 'd', 'o'],
+				['w', 'o', 'b', 'b', 'u', 'f', 'f', 'e', 't'],
+				['u', 'r', 's', 'a', 'r', 'i', 'n', 'g'],
+			]
+
+			var hangmanWordsList = [
+			"pikachu",
+			"squirtle",
+			"charizard",
+			"electabuzz",
+			"hitmonchan",
+			"chikorita",
+			"ampharos",
+			"sudowoodo",
+			"wobbuffet",
+			"ursaring"
+			]
+
+			var imageList =[
+				["assets/images/pikachuhidden.jpg", "assets/images/pikachu.jpg"],
+				["assets/images/squirtlehidden.jpg", "assets/images/squirtle.jpg"],
+				["assets/images/charizardhidden.jpg", "assets/images/charizard.jpg"],
+				["assets/images/electabuzzhidden.jpg", "assets/images/electabuzz.jpg"],
+				["assets/images/hitmonchanhidden.jpg", "assets/images/hitmonchan.jpg"],
+				["assets/images/chikoritahidden.jpg", "assets/images/chikorita.jpg"],
+				["assets/images/ampharoshidden.jpg", "assets/images/ampharos.jpg"],
+				["assets/images/sudowoodohidden.jpg", "assets/images/sudowoodo.jpg"],
+				["assets/images/wobbuffethidden.jpg", "assets/images/wobbuffet.jpg"],
+				["assets/images/ursaringhidden.jpg", "assets/images/ursaring.jpg"]
+			]
+
+			var wordReference = 0; //referring to the pokemon in the array initially at pikachu
+			var letterRepeat = true; //check to see if letter repeats
+			var pokemonImage = document.getElementById("whosthat"); //referring to image of pokemon
+			var pokemonName = document.getElementById("pokemon"); //referring to the dashes
+			var candyDisplay = document.getElementById("candies"); // showing number of guesses
+			var guessesDisplay = document.getElementById("guesses"); // showing number of guesses
+			var wrongLetters = document.getElementById("letters"); //referring to list of wrong letters
+			var messageDisplay = document.getElementById("message"); //showing the winning/losing message
+			var wins = 0;
+			var wrongGuesses = 10;
+			var userChoice; //gets the user choice
+			var str; //string for input variable
+			var int; //integer to mark index
+			var listWrong = []; //array to hold wrong letters
+			var underLines; //variable to placehold lines
+			var check; //boolean to check wrong letters
+			var game = true; //used to check if game is ready to go
+
+
+// function that changes images
+			function imageChange(){
+				if(game){
+				pokemonImage.src = imageList[wordReference][0];
+				}
+				else{
+					pokemonImage.src = imageList[wordReference][1];
+				}
+			}
+
+			imageChange();
+
+// function that fills in lines
+
+			function fillLines() {
+				underLines = Array(hangmanWords[wordReference].length+1).join("_"); //the underlines to placehold letters
+				pokemonName.innerHTML = underLines;
+			}
+
+			fillLines();
+
+// display amount of wins/candies
+
+			function numberCandies() {
+				candyDisplay.innerHTML = "Candies: " + wordReference;
+			}
+
+			numberCandies();
+
+
+// function that shows number of guesses
+			
+			function numberGuesses() {
+				guessesDisplay.innerHTML = "Number of Guesses: " + wrongGuesses;
+			}
+
+			numberGuesses();
+
+// function to showcase the correct letters
+
+			function replaceLetter(str, int) {
+				underLines = underLines.substr(0, int) + str + underLines.substr(int + 1);
+				check = false;
+				return underLines;
+			}
+
+// function that showcases resets wrong letter list
+
+			function resetWrong() {
+				listWrong = [];
+				wrongLetters.innerHTML = listWrong;
+			}
+
+// create button using string as input
+
+			function buttonCreate(str) {
+				var btn = document.createElement("button");var 
+				buttonMessage = document.createTextNode(str);
+				btn.appendChild(buttonMessage);
+				messageDisplay.appendChild(btn);
+				return btn;
+			}
+
+// functionn that refreshes game
+
+			function reset() {
+				wrongGuesses = 10;
+				fillLines();
+				resetWrong();
+				numberGuesses();
+				numberCandies();
+				messageDisplay.innerHTML = "";
+				game = true;
+			}
+
+// checking if they win
+
+			function wordCheck(str){
+				if(wrongGuesses == 0){
+						wordReference = 0;
+						game = false;
+						buttonCreate("You lose! Start over and try again?").onclick = function(event){
+							reset();
+							imageChange();
+						}
+					}
+				if(str == hangmanWordsList[wordReference]){
+					game = false;
+					imageChange();
+					wordReference++;
+					numberCandies();
+					if(wordReference == 10){
+						wordReference = 0;
+						buttonCreate("YOU ARE A POKEMON MASTER! Play again?").onclick = function(event){
+							reset();
+							imageChange();
+						}
+					}
+					else{
+						buttonCreate("You win! Next Pokemon?").onclick = function(event){
+							reset();
+							imageChange();
+						}
+					}
+				}
+			}
+
+// checking if character is letter
+
+			function isLetter(str) {
+				return str.match(/^[a-z]/);
+			}
+
+// checks if the letter guessed is right
+
+			function checkRight(str){
+				for (var i = 0; i < hangmanWords[wordReference].length; i++) {
+					if (str == hangmanWords[wordReference][i]) {
+						return true;
+					}
+				}
+			}
+
+// function to check the letter is right or wrong
+
+			function checkGuess(userChoice) {
+				if(checkRight(userChoice)){
+					for (var i = 0; i < hangmanWords[wordReference].length; i++) {
+						if (userChoice == hangmanWords[wordReference][i]) {
+							pokemonName.innerHTML = replaceLetter(userChoice, i);
+							}	
+					}
+				}
+				else{
+					for (var j = 0; j <= listWrong.length;) {
+						if (userChoice == listWrong[j]) {
+							return;
+						}
+						else{
+							j++;
+						}
+						if(j > listWrong.length){
+							if(isLetter(userChoice)){
+								listWrong.push(userChoice);
+								wrongLetters.innerHTML = listWrong.join("");
+								wrongGuesses--;
+								numberGuesses();
+								return;
+							}
+						}
+					}	
+				}
+				
+			}
+
+// pressing key event
+
+			document.onkeyup = function(event){
+				if(game){
+					var choice = String.fromCharCode(event.keyCode).toLowerCase();
+					checkGuess(choice);
+					wordCheck(pokemonName.innerHTML);
+				}	
+			}
+
+
+			
+		</script>
+	</body>
+</html>

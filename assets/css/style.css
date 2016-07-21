@@ -1,0 +1,58 @@
+.container{
+	width: 100%;
+	height: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 25px 0 25px 0;
+	clear: both;
+	background-color: white;
+	border-radius: 25%;
+}
+
+body{
+	font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+	text-align: center;
+	background-color: tan;
+}
+
+h1{
+	color: white;
+	background-color: black;
+	padding: 25px 0 25px 0;
+}
+
+#whosthat{
+	width: 60%;
+	border-style: solid;
+	border-color: red;
+	border-width: 15px;
+	border-radius: 25%;
+}
+
+#pokemon{
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	color: green;
+}
+
+#letters{
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	color: red;
+}
+
+#candies{
+	color: pink;
+}
+
+#guesses{
+	color: maroon;
+}
+
+button {
+	background-color: royalblue;
+	color: yellow;
+	padding: 10px;
+	position: absolute;
+	bottom: 50px;
+}
