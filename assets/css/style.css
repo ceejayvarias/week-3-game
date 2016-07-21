@@ -9,6 +9,16 @@
 	border-radius: 25%;
 }
 
+.main-container{
+	position: relative;
+}
+
+.sub-container{
+	position: absolute;
+	left: 73%;
+	bottom: 25%;
+}
+
 body{
 	font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
 	text-align: center;
@@ -53,7 +63,7 @@ button {
 	background-color: royalblue;
 	color: yellow;
 	padding: 10px;
-	position: absolute;
+/*	position: absolute;*/
 	bottom: 50px;
 	left: 60%;
 }
