@@ -8,4 +8,3 @@ __Technologies used:__
 * CSS
 * Javascript
 * JQuery
-mark
